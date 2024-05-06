@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "brs_RN69v2",
+    "slug": "brs_RN69v2",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
