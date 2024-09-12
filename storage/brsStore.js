@@ -1,5 +1,5 @@
 import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage'; //@react-native-community/async-storage
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import {observable} from 'mobx';
 import {create, persist} from 'mobx-persist';
 import CryptoJS from 'react-native-crypto-js';

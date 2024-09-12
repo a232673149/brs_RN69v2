@@ -11,7 +11,6 @@ import {observer} from 'mobx-react';
 import {operationStore} from '../storage/operationStore';
 import {brsStore} from '../storage/brsStore';
 
-@observer
 class BigKeyBoard extends React.Component {
   static inStorybook = true;
   static fitScreen = false;
@@ -378,8 +377,7 @@ class BigKeyBoard extends React.Component {
     brsStore.EnFlag = true;
     brsStore.enFlag = false;
     brsStore.symbolFlag = false;
-    
-    
+
     operationStore.keyboardButtonSound.play();
   };
   changeTo123 = async () => {
@@ -387,8 +385,8 @@ class BigKeyBoard extends React.Component {
     brsStore.EnFlag = false;
     brsStore.enFlag = false;
     brsStore.symbolFlag = false;
-    
-    
+    await this.props.onPlusValue('1');
+    await this.props.onBackValue();
     operationStore.keyboardButtonSound.play();
   };
   changeToAbc = async () => {
@@ -396,8 +394,8 @@ class BigKeyBoard extends React.Component {
     brsStore.EnFlag = false;
     brsStore.enFlag = true;
     brsStore.symbolFlag = false;
-    
-    
+    await this.props.onPlusValue('1');
+    await this.props.onBackValue();
     operationStore.keyboardButtonSound.play();
   };
   changeToSy = async () => {
@@ -405,8 +403,8 @@ class BigKeyBoard extends React.Component {
     brsStore.EnFlag = false;
     brsStore.enFlag = false;
     brsStore.symbolFlag = true;
-    
-    
+    await this.props.onPlusValue('1');
+    await this.props.onBackValue();
     operationStore.keyboardButtonSound.play();
   };
 
@@ -463,11 +461,11 @@ class BigKeyBoard extends React.Component {
               <View style={styles.button}>
                 <TouchableHighlight
                   onPress={async () => {
-                    
-                    
+                    // await this.props.onPlusValue('1');
+                    // await this.props.onBackValue();
                     operationStore.keyboardButtonSound.play();
-                    
-                    
+                    // brsStore.keyboardOpen = false;
+                    // this.props.refs[this.props.modal].close();
                     if (brsStore.keyboardOpen === true) {
                       brsStore.keyboardModal.close();
                       brsStore.keyboardOpen = false;
@@ -587,12 +585,12 @@ class BigKeyBoard extends React.Component {
               <View style={styles.button}>
                 <TouchableHighlight
                   onPress={async () => {
-                    
-                    
+                    await this.props.onPlusValue('1');
+                    await this.props.onBackValue();
                     operationStore.keyboardButtonSound.play();
                     operationStore.keyboardButtonSound.play();
-                    
-                    
+                    brsStore.keyboardOpen = false;
+                    this.props.refs[this.props.modal].close();
                     if (brsStore.keyboardOpen === true) {
                       brsStore.keyboardModal.close();
                       brsStore.keyboardOpen = false;
@@ -809,7 +807,11 @@ class BigKeyBoard extends React.Component {
               <View style={styles.button}>
                 <TouchableHighlight
                   onPress={async () => {
+                    // await this.props.onPlusValue('1');
+                    // await this.props.onBackValue();
                     operationStore.keyboardButtonSound.play();
+                    // brsStore.keyboardOpen = false;
+                    // this.props.refs[this.props.modal].close();
                     if (brsStore.keyboardOpen === true) {
                       brsStore.keyboardModal.close();
                       brsStore.keyboardOpen = false;
@@ -1025,11 +1027,11 @@ class BigKeyBoard extends React.Component {
               <View style={styles.button}>
                 <TouchableHighlight
                   onPress={async () => {
-                    
-                    
-                    // operationStore.keyboardButtonSound.play();
-                    
-                    
+                    await this.props.onPlusValue('1');
+                    await this.props.onBackValue();
+                    operationStore.keyboardButtonSound.play();
+                    brsStore.keyboardOpen = false;
+                    this.props.refs[this.props.modal].close();
                     if (brsStore.keyboardOpen === true) {
                       brsStore.keyboardModal.close();
                       brsStore.keyboardOpen = false;
@@ -1171,7 +1173,7 @@ class BigKeyBoard extends React.Component {
 
 const styles = StyleSheet.create({
   txtDarkBlueSpan0: {
-    
+    //黑
     color: '#182EA4',
     textAlign: 'center',
     lineHeight: 40,
@@ -1270,4 +1272,4 @@ const styles = StyleSheet.create({
 
 const layouts = {};
 
-export default BigKeyBoard;
+export default observer(BigKeyBoard);

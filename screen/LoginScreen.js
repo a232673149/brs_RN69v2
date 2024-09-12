@@ -12,28 +12,35 @@ import {
 } from 'react-native';
 import {observer} from 'mobx-react';
 import Moment from 'moment';
-//使用本機的套件
-import posize from './posize.v11';
-import {loginModel} from '../model/LoginModel';
-import {brsStore} from '../storage/brsStore';
-import BigKeyBoard from '../components/BigKeyBoard';
-import PickerSelect from '../components/PickerSelect';
 import NetInfo from '@react-native-community/netinfo';
-import {operationStore} from '../storage/operationStore';
-import log from '../module/Logger';//rnFsFileAsync可能有問題
+//使用本機的套件
 import {Alert} from '../components/Alert';
-import {offLineStore} from '../storage/offLineStore';
-import {displayFlashMessage} from '../module/DisplayFlashMessage';
-import {DataSelectFlightModel} from '../model/Data_SelectFlightModel';//會有循環引用的警告出現，可能在架構上需要做一些更動
-import {operationModule} from '../module/OperationModule';
+import posize from './posize.v11';
+import {brsStore} from '../storage/brsStore';
 
-// import Sound from 'react-native-sound';//目前瀏覽是單純只能rn瀏覽
-import Sound from '@react-native-voice/voice';//暫時以此套件來使用若有其他問題在進行修正
+
+import PickerSelect from '../components/PickerSelect';
+
+import Sound from 'react-native-sound';
+
+
+import {loginModel} from '../model/LoginModel';
+import {operationStore} from '../storage/operationStore';
+import {displayFlashMessage} from '../module/DisplayFlashMessage';
+import {operationModule} from '../module/OperationModule';
+import {DataSelectFlightModel} from '../model/Data_SelectFlightModel';
+import BigKeyBoard from '../components/BigKeyBoard';
+import {offLineStore} from '../storage/offLineStore';
+
+import log from '../module/Logger';
+
+//2024-09-04以上套件皆已完善，以下畫面需要進行調整。
 
 const Px = posize(View);
 const PxFlex = posize(View);
 const PxImage = posize(Image);
 const PxTouchableOpacity = posize(TouchableOpacity);
+
 
 @observer
 class LoginScreen extends React.Component {
@@ -522,7 +529,7 @@ class LoginScreen extends React.Component {
                     />
                   </PxTouchableOpacity>
                   <TextInput
-                    contextMenuHidden={true}
+                    contextMenuHidden={true}//防止用戶進行複製貼上
                     scrollEnabled={false}
                     showSoftInputOnFocus={false}
                     blurOnSubmit={false}
@@ -530,7 +537,7 @@ class LoginScreen extends React.Component {
                     placeholder="使用者名稱"
                     value={brsStore.brsUI}
                     onChangeText={async brsUI => {
-                      brsUI = brsUI.trim();
+                      brsUI = brsUI.trim();//去除用戶輸入文本的前後空格，確保處理的輸入是乾淨的。
                       if (loginModel.onChangeTextUI(brsUI)) {
                         brsStore.showBusyCursor('');
                         await loginModel.onLoginConfirm();
@@ -540,16 +547,23 @@ class LoginScreen extends React.Component {
                     }}
                     style={{marginLeft: 60, flex: 1}}
                   />
+
                   <PxTouchableOpacity
                     layout={layouts.img09}
-                    >
+                    onPress={async () => {
+                      brsStore.keyboardSelection = 100;
+                      brsStore.keyboardSelectionStart = 100;
+                      brsStore.keyboardSelectionEnd = 100;
+                      brsStore.keyboardOpen = true;
+                      brsStore.keyboardModal = this.refs.modal4;
+                      this.refs.modal4.open();
+                    }}>
                     <PxImage
                       source={require('../assets/mobile_keyboard.png')}
                       layout={layouts.img10}
                     />
                   </PxTouchableOpacity>
                 </Px>
-                {}
                 <View style={styles.space74} />
                 <Px layout={layouts.group44} removeClippedSubviews={true}>
                   <Px layout={layouts.rect20} />
@@ -626,6 +640,7 @@ class LoginScreen extends React.Component {
                 </PxTouchableOpacity>
 
                 <View style={styles.space76} />
+                {/* 此區塊為弱勢出現連線失敗，該按鈕則會跳出來即可進行重新連線 */}
                 {brsStore.brsFightServer === '連線失敗!!' && (
                   <PxTouchableOpacity
                     layout={layouts.group54}
@@ -992,11 +1007,13 @@ const layouts = {
     style: styles.img28Body,
   },
   group43: {
+    //使用者的人像圖
     absolute: true,
     xy: [['13px', '39px', '190fr'], ['4px', 'minmax(32px,32fr)', '2fr']],
     style: styles.group43Body,
   },
   group41: {
+    //使用者名稱整體框的內容
     xy: [['1px', 'minmax(0px,242fr)', '1px'], ['38px']],
     outerStyle: styles.group41Outer,
     style: styles.group41Body,
